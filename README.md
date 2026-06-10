@@ -3,6 +3,31 @@
 X (Twitter) のタイムライン上の各ツイートに動画ダウンロードボタンを追加するブラウザ拡張です。
 Chrome 用と Firefox 用の両方をビルドできます。
 
+## かんたんインストール（ビルド不要）
+
+[release フォルダ](release/) にパッケージ済みファイルがあります。
+
+### Chrome / Edge
+
+1. [VideoDownloaderX-chrome.zip](https://github.com/kaki373/VideoDownloaderX/raw/main/release/VideoDownloaderX-chrome.zip) をダウンロードして好きな場所に解凍
+2. `chrome://extensions` を開き、右上の「デベロッパーモード」を ON
+3. 「パッケージ化されていない拡張機能を読み込む」→ 解凍したフォルダを選択
+4. x.com を開く（開いていたタブは F5 で再読み込み）
+
+### Firefox
+
+1. [VideoDownloaderX-firefox.xpi](https://github.com/kaki373/VideoDownloaderX/raw/main/release/VideoDownloaderX-firefox.xpi) をダウンロード
+2. `about:debugging#/runtime/this-firefox` を開く
+3. 「一時的なアドオンを読み込む...」→ ダウンロードした .xpi を選択
+4. x.com を開く（開いていたタブは F5 で再読み込み）
+
+※ 通常版 Firefox は未署名アドオンを常設インストールできないため一時読み込みになります
+（再起動で消えるので読み込み直してください）。
+Firefox Developer Edition / ESR なら `about:config` で
+`xpinstall.signatures.required` を `false` にしたうえで、
+`about:addons` → 歯車アイコン → 「ファイルからアドオンをインストール...」→ .xpi を選ぶと
+常設インストールできます。
+
 ## 仕組み
 
 1. `injected.js`（ページの MAIN ワールドで実行）が `fetch` / `XMLHttpRequest` をフックし、
