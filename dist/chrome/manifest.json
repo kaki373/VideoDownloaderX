@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Video Downloader",
+  "version": "1.0.1",
+  "description": "X (Twitter) のツイートに動画ダウンロードボタンを追加します",
+  "permissions": ["downloads"],
+  "host_permissions": ["https://cdn.syndication.twimg.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*", "https://mobile.x.com/*"],
+      "js": ["injected.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://x.com/*", "https://twitter.com/*", "https://mobile.x.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
