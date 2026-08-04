@@ -1,7 +1,9 @@
 // Runs in the page's MAIN world (declared via "world": "MAIN" in the manifest).
 // Hooks fetch/XHR so that X's own GraphQL API responses can be inspected,
-// extracts mp4 video variants per tweet, and forwards them to the content
-// script via window.postMessage.
+// extracts mp4 video variants and photo URLs per tweet, and forwards them to
+// the content script via window.postMessage. Photos are passed through as
+// listed by the API; the content script normalises them to the full-size
+// variant before downloading.
 (() => {
   const API_RE = /\/i\/api\/|api\.(?:twitter|x)\.com\//;
   const MSG_SOURCE = 'x-video-dl';
@@ -30,6 +32,14 @@
     return videos;
   }
 
+  function pickPhotos(media) {
+    const photos = [];
+    for (const m of media) {
+      if (m.type === 'photo' && m.media_url_https) photos.push(m.media_url_https);
+    }
+    return photos;
+  }
+
   function walk(node, items, depth) {
     if (!node || typeof node !== 'object' || depth > 50) return;
     if (Array.isArray(node)) {
@@ -45,7 +55,8 @@
 
     if (id && ee && Array.isArray(ee.media)) {
       const videos = pickVideos(ee.media);
-      if (videos.length) {
+      const photos = pickPhotos(ee.media);
+      if (videos.length || photos.length) {
         let screenName = null;
         try {
           const u = node.core && node.core.user_results && node.core.user_results.result;
@@ -55,7 +66,7 @@
             (legacy.user && legacy.user.screen_name) ||
             null;
         } catch (e) { /* ignore */ }
-        items.push({ id: String(id), screenName, videos });
+        items.push({ id: String(id), screenName, videos, photos });
       }
     }
 

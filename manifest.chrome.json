@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Video Downloader",
-  "version": "1.0.1",
-  "description": "X (Twitter) のツイートに動画ダウンロードボタンを追加します",
+  "version": "1.1.0",
+  "description": "X (Twitter) のツイートに動画・画像のダウンロードボタンを追加します",
   "permissions": ["downloads"],
   "host_permissions": ["https://cdn.syndication.twimg.com/*"],
   "background": {
